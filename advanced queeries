@@ -1,1 +1,73 @@
+--set operations
+select lastname, firstname, email, 'section 1' as sectionnumber
+from person
+join student using(personkey)
+join roster using(studentkey)
+where sectionkey=1
+union 
+select lastname, firstname, email,'section 2'
+from person
+join student using(personkey)
+join roster using(studentkey)
+where sectionkey=2;
+
+--set operations
+select lastname, firstname, email
+from person
+join student using(personkey)
+join roster using(studentkey)
+where sectionyear=2019
+intersect
+select lastname, firstname, email
+from person
+join student using(personkey)
+join roster using(studentkey)
+where sectionyear=2020;
+
+--set operations
+select lastname, firstname, email
+from person
+join student using(personkey)
+join roster using(studentkey)
+where sectionyear=2019;
+
+--windows functions
+select quarterkey, studentkey, finalgrade, ave(finalgrade) over ( sectionYear order by quarterkey)
+from coursesection
+join roster using(sectionkey)
+where sectionyear=2019
+
+--row number
+select distinct sectionyear from coursesection;
+
+insert into quartergrades
+select sectionyear, sectionkey, studentkey, order by ave(finalgrade) 
+from coursesection
+join roster using(sectionkey)
+group by sectionyear, quarterkey;
+
+select quarterkey, studentkey, finalgrade, ave(finalgrade) order by quarterkey DESC)
+from coursesection
+join roster using(sectionkey;
+				  
+select studentkey, finalgrade, quarterkey,
+ROW_NUMBER() over(ORDER BY studentkey)
+from person
+join personkey using(studentkey);
+				  
+select studentkey, finalgrade, quarterkey,
+ROW_NUMBER() over(ORDER BY studentkey)
+from person
+join personkey using(studentkey)grant
+where ROW_NUMBER BETWEEN 29 and 35;
+				  
+select quarterkey, studentkey, finalgrade, ave(finalgrade) DENSE_RANK (quarterkey)
+from coursesection
+join roster using(sectionkey)
+
+select * from quarterkey;
+create extension tablefunc;
+select * from
+crosstab ('select"Year", quarter, round(avggrade,2) from quartergrades order by 1,2')
+AS final_result("Year" integer, "1" numric, "2" numric, "3" numeric, "4" numeric);
 
